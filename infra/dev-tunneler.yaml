@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dev-tunneler
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: dev-tunneler
+    spec:
+      containers:
+        - name: dev-tunneler
+          image: codefresh/dev-tunneler-client:master
+          env:
+            - name: SERVER_URI
+              value: ws://dev-tunneler-ws.codefresh.io
+            - name: CLIENT_ID
+              value: yarik-argo-events
+            - name: DEBUG
+              value: tunneler-client*
+  selector:
+    matchLabels:
+      app: dev-tunneler
+
