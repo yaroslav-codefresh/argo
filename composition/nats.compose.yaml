@@ -1,0 +1,118 @@
+version: "3.7"
+networks:
+  nats-streaming:
+services:
+  nats-streaming-1:
+    command:
+      - "--config"
+      - "/config/streaming.config"
+      - "--cluster_bootstrap"
+      - "--cluster_node_id"
+      - nats-streaming-1
+      - "--sql_source"
+      - "user=${DB_USER} password=${DB_PASSWORD} host=postgres-1 sslmode=disable"
+      - "--debug"
+      - "--stan_debug"
+    image: library/nats-streaming:0.21-alpine
+    depends_on:
+      - postgres-1
+    networks:
+      - nats-streaming
+    ports:
+      - "14222:4222"
+      - "18222:8222"
+    volumes:
+      - ${WORKING_DIR}/nats/nats-streaming-1:/data
+      - ${CONFIG_DIR}/nats-streaming:/config
+
+
+  postgres-1:
+    image: library/postgres:13-alpine
+    networks:
+      - nats-streaming
+    environment:
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - 15432:5432
+    volumes:
+      - ${WORKING_DIR}/postgres/data:/var/lib/postgresql/data
+      - ${CONFIG_DIR}/nats-streaming/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+
+#  nats-streaming-2:
+#    command:
+#      - "--cluster"
+#      - "nats://0.0.0.0:6222"
+#      - "--cluster_id"
+#      - nats-streaming
+#      - "--clustered"
+#      - "--cluster_log_path"
+#      - /data/log
+#      - "--cluster_node_id"
+#      - nats-streaming-2
+#      - "--cluster_raft_logging"
+#      - "--debug"
+#      - "--dir"
+#      - /data/msg
+#      - "--http_port"
+#      - "8222"
+#      - "--port"
+#      - "4222"
+#      - "--store"
+#      - file
+#      - "--stan_debug"
+#      - "--routes"
+#      - "nats://nats-streaming-1:5222"
+#      - "--hb_interval"
+#      - 2s
+#      - "--hb_fail_count"
+#      - "1"
+#      - "--hb_timeout"
+#      - 5s
+#    image: library/nats-streaming:0.21-alpine
+#    networks:
+#      - nats-streaming
+#    ports:
+#      - "24222:4222"
+#      - "28222:8222"
+#    volumes:
+#      - /home/yaroslav/work/nats/nats-streaming-2:/data
+#  nats-streaming-3:
+#    command:
+#      - "--cluster"
+#      - "nats://0.0.0.0:6222"
+#      - "--cluster_id"
+#      - nats-streaming
+#      - "--clustered"
+#      - "--cluster_log_path"
+#      - /data/log
+#      - "--cluster_node_id"
+#      - nats-streaming-3
+#      - "--cluster_raft_logging"
+#      - "--debug"
+#      - "--dir"
+#      - /data/msg
+#      - "--http_port"
+#      - "8222"
+#      - "--port"
+#      - "4222"
+#      - "--store"
+#      - file
+#      - "--stan_debug"
+#      - "--routes"
+#      - "nats://nats-streaming-1:6222"
+#      - "--hb_interval"
+#      - 2s
+#      - "--hb_fail_count"
+#      - "1"
+#      - "--hb_timeout"
+#      - 5s
+#    image: library/nats-streaming:0.21-alpine
+#    networks:
+#      - nats-streaming
+#    ports:
+#      - 34222:4222
+#      - 38222:8222
+#    volumes:
+#      - /home/yaroslav/work/nats/nats-streaming-3:/data
