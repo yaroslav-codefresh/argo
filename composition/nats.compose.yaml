@@ -19,8 +19,8 @@ services:
     networks:
       - nats-streaming
     ports:
-      - "14222:4222"
-      - "18222:8222"
+      - 14222:4222
+      - 18222:8222
     volumes:
       - ${WORKING_DIR}/nats/nats-streaming-1:/data
       - ${CONFIG_DIR}/nats-streaming:/config
