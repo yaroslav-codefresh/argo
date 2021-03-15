@@ -11,35 +11,16 @@ spec:
       eventName: example
   triggers:
     - template:
-        name: github-workflow-trigger
-        k8s:
-          group: argoproj.io
-          version: v1alpha1
-          resource: workflows
-          operation: create
-          source:
-            resource:
-              apiVersion: argoproj.io/v1alpha1
-              kind: Workflow
-              metadata:
-                generateName: github-
-              spec:
-                entrypoint: whalesay
-                arguments:
-                  parameters:
-                    - name: message
-                      # value will get overridden by the event payload
-                      value: hello world
-                templates:
-                  - name: whalesay
-                    inputs:
-                      parameters:
-                        - name: message
-                    container:
-                      image: docker/whalesay:latest
-                      command: [cowsay]
-                      args: ["{{inputs.parameters.message}}"]
-          parameters:
+        name: http-trigger
+        http:
+          url: http://192.168.99.1:9090/events
+          payload:
             - src:
                 dependencyName: test-dep
-              dest: spec.arguments.parameters.0.value
+                dataKey: "@this"
+              dest: data
+            - src:
+                dependencyName: test-dep
+                contextKey: "@this"
+              dest: context
+          method: POST
