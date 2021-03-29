@@ -16,7 +16,7 @@ spec:
         endpoint: /argo-events
         port: "12000"
         method: POST
-        url: http://dev-tunneler.codefresh.io/argo-events?client=yarik-argo-events&service=cfrouter
+        url: http://dev-tunneler.codefresh.io/argo-events?client=yarik-argo-events&service=github-eventsource-svc:12000
       # https://developer.github.com/v3/activity/events/types/
       events:
         - "push"

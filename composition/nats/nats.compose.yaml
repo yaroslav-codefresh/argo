@@ -1,0 +1,41 @@
+version: "3.7"
+networks:
+  nats-streaming:
+services:
+  nats-streaming-1:
+    command:
+      - "--config"
+      - "/config/streaming.config"
+      - "--cluster_bootstrap"
+      - "--cluster_node_id"
+      - nats-streaming-1
+      - "--sql_source"
+      - "user=${DB_USER} password=${DB_PASSWORD} host=postgres-1 sslmode=disable"
+      - "--debug"
+      - "--stan_debug"
+    image: library/nats-streaming:0.21-alpine
+    depends_on:
+      - postgres-1
+    networks:
+      - nats-streaming
+    ports:
+      - 14222:4222
+      - 18222:8222
+    volumes:
+      - ${WORKING_DIR}/nats/nats-streaming-1:/data
+      - ${CONFIG_DIR}/nats-streaming:/config
+
+
+  postgres-1:
+    image: library/postgres:13-alpine
+    networks:
+      - nats-streaming
+    environment:
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - 15432:5432
+    volumes:
+      - ${WORKING_DIR}/postgres/data:/var/lib/postgresql/data
+      - ${CONFIG_DIR}/nats-streaming/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d

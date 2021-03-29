@@ -17,10 +17,12 @@ spec:
           payload:
             - src:
                 dependencyName: test-dep
-                dataKey: "@this"
+                dataKey: body
               dest: data
             - src:
                 dependencyName: test-dep
                 contextKey: "@this"
               dest: context
           method: POST
+          headers:
+            Content-Type: "application/json"
