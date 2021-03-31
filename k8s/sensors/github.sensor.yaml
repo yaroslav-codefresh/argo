@@ -17,7 +17,7 @@ spec:
         k8s:
           group: argoproj.io
           version: v1alpha1
-          resource: workflows
+          resource: workflowtemplates
 #          operation: create
           source:
             url:
