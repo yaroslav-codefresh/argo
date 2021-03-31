@@ -18,8 +18,8 @@ spec:
           group: argoproj.io
           version: v1alpha1
           resource: workflowtemplates
-          # update also creates
-          operation: update
+          # patch is apply
+          operation: patch
           source:
             url:
               path: https://raw.githubusercontent.com/yaroslav-codefresh/argo/main/k8s/workflow-templates/whalesay.template.yaml
