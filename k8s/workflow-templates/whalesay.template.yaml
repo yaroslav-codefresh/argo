@@ -1,7 +1,8 @@
 apiVersion: argoproj.io/v1alpha1
 kind: WorkflowTemplate
 metadata:
-  generateName: steps-
+  name: whalesay
+  namespace: argo
 spec:
   entrypoint: hello           # We reference our first "template" here
 
