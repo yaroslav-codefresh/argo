@@ -1,5 +1,5 @@
 WORKING_DIR="$HOME/work"
-COMPOSITION_DIR="$WORKING_DIR/codefresh/argo-yarik/composition/kafka"
+COMPOSITION_DIR="$WORKING_DIR/codefresh/argo-yarik/composition/nats"
 
 mkdir -p "${WORKING_DIR}/nats/nats-streaming-1"
 mkdir -p "${WORKING_DIR}/postgres/data"
