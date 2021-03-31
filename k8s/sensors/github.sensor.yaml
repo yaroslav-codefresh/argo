@@ -2,9 +2,11 @@ apiVersion: argoproj.io/v1alpha1
 kind: Sensor
 metadata:
   name: github
+  namespace: argo-events
 spec:
   template:
     serviceAccountName: argo-events-sa
+    namespace: argo-events
   dependencies:
     - name: test-dep
       eventSourceName: github
