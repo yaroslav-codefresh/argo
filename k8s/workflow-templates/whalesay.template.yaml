@@ -12,7 +12,7 @@ spec:
     - - name: hello
         template: whalesay    # We reference our second "template" here
         arguments:
-          parameters: [{name: message, value: "hello11"}]
+          parameters: [{name: message, value: "hello11111"}]
 
   - name: whalesay             # The second "template" in this Workflow, it is referenced by "hello"
     inputs:
