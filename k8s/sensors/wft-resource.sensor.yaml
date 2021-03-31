@@ -1,0 +1,30 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Sensor
+metadata:
+  name: wft-resource
+  namespace: argo-events
+spec:
+  template:
+    serviceAccountName: argo-events-sa
+    namespace: argo-events
+  dependencies:
+    - name: test-dep
+      eventSourceName: wft-resource
+      eventName: workflow-templates
+  triggers:
+    - template:
+        name: http-trigger
+        http:
+          url: http://192.168.99.1:9090/events
+          payload:
+            - src:
+                dependencyName: test-dep
+                dataKey: body
+              dest: data
+            - src:
+                dependencyName: test-dep
+                contextKey: "@this"
+              dest: context
+          method: POST
+          headers:
+            Content-Type: "application/json"

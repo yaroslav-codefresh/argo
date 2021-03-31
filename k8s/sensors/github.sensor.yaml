@@ -18,23 +18,8 @@ spec:
           group: argoproj.io
           version: v1alpha1
           resource: workflowtemplates
-#          operation: create
+          # update also creates
+          operation: update
           source:
             url:
               path: https://raw.githubusercontent.com/yaroslav-codefresh/argo/main/k8s/workflow-templates/whalesay.template.yaml
-#    - template:
-#        name: http-trigger
-#        http:
-#          url: http://192.168.99.1:9090/events
-#          payload:
-#            - src:
-#                dependencyName: test-dep
-#                dataKey: body
-#              dest: data
-#            - src:
-#                dependencyName: test-dep
-#                contextKey: "@this"
-#              dest: context
-#          method: POST
-#          headers:
-#            Content-Type: "application/json"
