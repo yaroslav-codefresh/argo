@@ -10,6 +10,13 @@ spec:
       eventSourceName: github
       eventName: example
   triggers:
+    - template:
+        name: wft-trigger
+        k8s:
+#          operation: create
+          source:
+            url:
+              path: https://raw.githubusercontent.com/yaroslav-codefresh/argo/main/k8s/workflow-templates/whalesay.template.yaml
 #    - template:
 #        name: http-trigger
 #        http:
@@ -26,9 +33,3 @@ spec:
 #          method: POST
 #          headers:
 #            Content-Type: "application/json"
-    - template:
-        name: wft-trigger
-        k8s:
-          operation: apply
-          source:
-            url: https://raw.githubusercontent.com/yaroslav-codefresh/argo/tree/main/k8s/workflow-templates/whalesay.template.yaml
