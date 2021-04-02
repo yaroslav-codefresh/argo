@@ -10,7 +10,7 @@ spec:
       - port: 12000
         targetPort: 12000
   github:
-    example:
+    push:
       owner: yaroslav-codefresh
       repository: argo
       webhook:

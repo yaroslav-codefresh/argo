@@ -1,16 +1,16 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Sensor
 metadata:
-  name: wft-resource
+  name: workflow-resource
   namespace: argo-events
 spec:
   template:
     serviceAccountName: argo-events-sa
     namespace: argo-events
   dependencies:
-    - name: workflow-template-operation
-      eventSourceName: wft-resource
-      eventName: workflow-templates
+    - name: workflow-operation
+      eventSourceName: workflow-resource
+      eventName: workflows
   triggers:
     - template:
         name: http-trigger
@@ -18,11 +18,11 @@ spec:
           url: http://192.168.99.1:9090/events
           payload:
             - src:
-                dependencyName: workflow-template-operation
+                dependencyName: workflow-operation
                 dataKey: body
               dest: data
             - src:
-                dependencyName: workflow-template-operation
+                dependencyName: workflow-operation
                 contextKey: "@this"
               dest: context
           method: POST

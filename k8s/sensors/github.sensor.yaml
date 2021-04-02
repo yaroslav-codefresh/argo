@@ -8,9 +8,9 @@ spec:
     serviceAccountName: argo-events-sa
     namespace: argo-events
   dependencies:
-    - name: test-dep
+    - name: push
       eventSourceName: github
-      eventName: example
+      eventName: push
   triggers:
     - template:
         name: wft-trigger
