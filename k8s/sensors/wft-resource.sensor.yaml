@@ -15,7 +15,7 @@ spec:
     - template:
         name: http-trigger
         http:
-          url: http://192.168.99.1:9090/events
+          url: http://local.codefresh.io/argo/api/events
           payload:
             - src:
                 dependencyName: workflow-template-operation
@@ -28,3 +28,9 @@ spec:
           method: POST
           headers:
             Content-Type: "application/json"
+            Authorization: "600b4b19354c1e0e06546ebf.e14f53541430b21441e3fbb60a92dedc"
+          policy:
+            status:
+              allow:
+                - 200
+                - 201
