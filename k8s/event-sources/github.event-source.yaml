@@ -17,7 +17,7 @@ spec:
         endpoint: /
         port: "12000"
         method: POST
-        url: http://dev-tunneler.codefresh.io/?client=yarik-argo-events&service=github-eventsource-svc:12000
+        url: http://4c9d06f6b3a9.ngrok.io
       # https://developer.github.com/v3/activity/events/types/
       events:
         - "push"
