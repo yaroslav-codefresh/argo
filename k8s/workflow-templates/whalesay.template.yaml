@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: WorkflowTemplate
 metadata:
-  name: whalesay-1
+  name: whalesay
   namespace: argo
 spec:
   entrypoint: hello           # We reference our first "template" here
@@ -10,15 +10,15 @@ spec:
   - name: hello               # The first "template" in this Workflow, it is referenced by "entrypoint"
     steps:                    # The type of this "template" is "steps"
     - - name: hello
-        template: whalesay-1    # We reference our second "template" here
+        template: whalesay    # We reference our second "template" here
         arguments:
           parameters: [{name: message, value: "helloo"}]
 
-  - name: whalesay-1             # The second "template" in this Workflow, it is referenced by "hello"
+  - name: whalesay             # The second "template" in this Workflow, it is referenced by "hello"
     inputs:
       parameters:
       - name: message
     container:                # The type of this "template" is "container"
-      image: docker/whalesay-1
+      image: docker/whalesay
       command: [cowsay]
       args: ["{{inputs.parameters.message}}"]
