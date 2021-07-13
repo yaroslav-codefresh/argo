@@ -1,0 +1,56 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Workflow
+metadata:
+  generateName: build-
+spec:
+  entrypoint: build-cli
+  templates:
+    - name: build-cli
+      steps:
+      - - name: call-dind
+          template: build-template
+          arguments:
+            parameters:
+                - name: repo
+                  value: "https://github.com/codefresh-io/cli.git"
+                - name: revision
+                  value: master
+                - name: docker_cmd
+                  value: "docker build -t codefresh/cli ."
+
+
+
+
+    - name: build-template
+      inputs:
+        parameters:
+          - name: repo
+          - name: revision
+          - name: docker_cmd
+        artifacts:
+          - name: git
+            path: /src
+            git:
+              repo: "{{inputs.parameters.repo}}"
+              revision: "{{inputs.parameters.revision}}"
+
+      container:
+        image: docker:19.03.13
+        command: [sh, -c]
+        args: ["until docker ps; do sleep 3; done; cd /src; {{inputs.parameters.docker_cmd}}"]
+        env:
+          - name: DOCKER_HOST               # the docker daemon can be access on the standard port on localhost
+            value: 127.0.0.1
+      sidecars:
+        - name: dind
+          image: docker:19.03.13-dind          # Docker already provides an image for running a Docker daemon
+          env:
+            - name: DOCKER_TLS_CERTDIR         # Docker TLS env config
+              value: ""
+          securityContext:
+            privileged: true                # the Docker daemon can only run in a privileged container
+          # mirrorVolumeMounts will mount the same volumes specified in the main container
+          # to the sidecar (including artifacts), at the same mountPaths. This enables
+          # dind daemon to (partially) see the same filesystem as the main container in
+          # order to use features such as docker volume binding.
+          mirrorVolumeMounts: true

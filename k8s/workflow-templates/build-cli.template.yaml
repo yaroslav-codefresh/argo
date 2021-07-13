@@ -1,0 +1,23 @@
+apiVersion: argoproj.io/v1alpha1
+kind: WorkflowTemplate
+metadata:
+  name: build-cli
+  namespace: argo
+spec:
+  entrypoint: build-cli
+  templates:
+      - name: build-cli
+        steps:
+          - - name: call-build-template
+              templateRef:
+                name: builds
+                template: build-template
+              arguments:
+                parameters:
+                  - name: repo
+                    value: "https://github.com/codefresh-io/cli.git"
+                  - name: revision
+                    value: master
+                  - name: docker_cmd
+                    value: "docker build -t codefresh/cli ."
+
